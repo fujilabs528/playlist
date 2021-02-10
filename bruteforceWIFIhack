@@ -1,0 +1,52 @@
+import requests
+import re
+from bs4 import BeautifulSoup
+import pyautogui
+import time
+import pandas as pd
+from sqlalchemy import create_engine
+import psycopg2
+
+###############################################################
+
+url = "https://en.wikipedia.org/wiki/Wikipedia:10,000_most_common_passwords"
+page = requests.get(url)
+soup = BeautifulSoup(page.content, "html.parser")
+my_table = soup.find("div", {"class": "mw-parser-output"})
+#print(my_table)
+data = my_table.findAll("li")
+#print(data)
+
+xxx_list = []
+for xrays in data:
+    xxx_list.append(xrays.text)
+print(xxx_list)
+
+assetsDF = pd.DataFrame()
+assetsDF["assets"] = xxx_list
+
+t = time.localtime()
+auto_generating_file_title = time.strftime("%H:%M:%S", t)
+
+engine = create_engine('postgresql://postgres:password@localhost:5432/sp500xxx')
+assetsDF.to_sql(auto_generating_file_title, engine)
+
+寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司寿司
+
+engine = create_engine('postgresql://postgres:password@localhost:5432/sp500xxx')
+alpha = pd.read_sql_table("18:27:53",engine)
+input_location = 592, 306
+join_button_location= 799, 410
+m=0
+for x in alpha["assets"]:
+    pyautogui.click(input_location)
+    pyautogui.write(x)
+    pyautogui.click(join_button_location)
+    time.sleep(11)
+    for y in range(30):
+        pyautogui.click(input_location)
+        pyautogui.press("delete")
+    t = time.localtime()
+    auto_generating_file_title = time.strftime("%H:%M:%S", t)
+    print(m, x, auto_generating_file_title)
+    m=m+1
