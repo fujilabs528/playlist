@@ -1,0 +1,455 @@
+import requests
+import re
+from bs4 import BeautifulSoup
+import pyautogui
+import time
+import pandas as pd
+from sqlalchemy import create_engine
+import psycopg2
+import richxerox
+import pyperclip
+import clipboard
+from PIL import Image
+import webbrowser
+
+
+###############################################################
+
+#START ON FIRST PAGE OF SAMASH
+# https://used.samashmusic.com/product-category/guitars/electric-guitars/
+#EBAY SIGN IN
+# https://accountsettings.ebay.com/uas
+#SECOND TAB
+# https://used.samashmusic.com/product/g5222-double-jet/
+
+###############################################################
+
+#CLICK ON FIRST PRODUCT
+#time.sleep(2)
+#print(pyautogui.position())
+
+first_item_location = 453, 461
+item_tab_location= 572, 52
+url_location= 591, 17
+
+#for x in range(12):
+
+#print(pyautogui.position())
+
+pyautogui.keyDown("command")
+pyautogui.click(first_item_location)
+pyautogui.click(item_tab_location)
+pyautogui.click(url_location)
+q= pyautogui.hotkey("command","c")
+r= clipboard.paste()
+r= str(r)
+#print(r)
+page = requests.get(r)
+#print(page)
+soup = BeautifulSoup(page.content, "html.parser")
+#print(soup)
+my_table = soup.find("div", {"class": "col-lg-12 col-md-12 col-sm-12 col-xs-12"})
+#print(my_table)
+data = my_table.findAll("h1")
+#print(data)
+xxx_list = []
+for xrays in data:
+    xxx_list.append(xrays.text)
+#print(xxx_list)
+
+# PRICE
+my_table1 = soup.find("p", {"class": "price"})
+#print(my_table1)
+for x in my_table1:
+    xxx_list.append(x)
+#print(xxx_list)
+
+#SHIPPING
+my_table2 = soup.find("p", {"style": "margin-top: -25px;"})
+#print(my_table2)
+for y in my_table2:
+    xxx_list.append(y)
+#print(xxx_list)
+
+#DESCRIPTION
+my_table3 = soup.find("div", {"id": "tab-description"})
+#print(my_table3)
+
+#HANDLES VARYING CONTENT TEXT VARIATIONS_ ISSUE POSSIBLE ??
+data3= my_table3.findAll("p")
+#data3= my_table3.find("p").getText()
+#print(data3)
+for i in data3:
+    #print(i.text)
+    xxx_list.append(i.text)
+print(xxx_list)
+
+# JUST FORGOT ABOUT IT _ SOME LISTINGS WILL NOT HAVE DESCRIPTIONS I GUESSS
+
+#data3= my_table3.findAll("div")
+#for i in data3:
+    #print(i.text)
+#    xxx_list.append(i.text)
+#print(xxx_list)
+
+
+
+
+
+
+
+
+
+
+#NEXT STEP IS TO DO A MANUAL 5 PIC SCREENSHOT
+
+pyautogui.keyDown("esc")
+l= pyautogui.screenshot("image.png")
+#print(l)
+im= Image.open("image.png")
+im.show()
+#(left, upper, right, lower) = (13,120,100,100)
+#im_crop=im.crop((left, upper, right, lower))
+#im_crop.show()
+
+#print(pyautogui.position())
+#royals_locations= 226, 325
+#mets_location= 591, 17
+
+#new_location= 56, 437
+#old_location= 791, 429
+
+#print(pyautogui.position())
+
+time.sleep(8)
+pyautogui.click(60,39) #MAXIMIZE I THINK
+#pyautogui.keyDown("mouse")
+pyautogui.click(128,412) #CORNER UPPER LEFT ?? OR MAXIMIZE
+#pyautogui.dragTo(746,777)
+#pyautogui.dragTo(100, 200, button='left')
+
+
+#pyautogui.click(56,437)
+#pyautogui.click(746, 777)
+
+#pyautogui.dragTo(746, 777,button="right")
+#pyautogui.mouseDown(new_location,button="left")
+#pyautogui.mouseUp(old_location)
+#pyautogui.hotkey("command","k")
+time.sleep(4)
+
+
+pyautogui.hotkey("command", "s")
+#b=0
+#pyautogui.write("hello")
+#b=b+1
+#pyautogui.keyDown("delete")
+time.sleep(10)
+
+#DELETE SEQUENCE WITH CLICK IN FUNCTION
+pyautogui.click(684, y=64)
+for x in range(30):
+    pyautogui.keyDown("backspace")
+
+
+#pyautogui.click(592, 63)
+#QUICK REST AFTER 30 DELETES
+time.sleep(2) ### NEEDS TO ENTER AS HELLO
+pyautogui.write("hello")
+pyautogui.hotkey("command", "s") # TRIGGER SAVE
+#time.sleep(6) # GIVE TIME FOR PREVIEW TO PROCESS/SAVE
+
+#pyautogui.click
+# TEST TO SEE IF THIS DOES ANYTHING- NOT A TEST
+
+time.sleep(2) # QUICK PAUSE
+pyautogui.click(775, 156) #REPLACE BUTTON I THINK
+#time.sleep(2) # QUICK PAUSE
+#pyautogui.hotkey("command", "s")
+time.sleep(5) # LONGER PAUSE
+#pyautogui.hotkey("command","C")
+#pyautogui.hotkey("control","left")
+
+
+# NEXT IS EBAY IMPLEMENT
+# HAVE LIST OF STRINGS AND PIC ON FILE
+# ENOUGH TO PRE FILL EBAY POST SELL FORM ESSENT
+# ALSO haVETO CREATE NEXT LISTING SMASH CODE BUT EASY
+
+
+#pyautogui.click(930, 48)
+##pyautogui.click(945, 50)
+#EBAY
+#ebay_location= 891, 51
+#ebay_location= 951, y=81
+#ebay_location= 894, 75
+#ebay_location= 948, 84
+##ebay_location= 949, 76
+##pyautogui.click(ebay_location)
+##time.sleep(2)
+#sell_location= 948, 78
+##nnm= 949, 107
+##pyautogui.click(nnm)
+##time.sleep(5)
+##list_location= 961, 427
+##pyautogui.click(list_location)
+
+
+###############################
+# I THINK THIS BOX WAS REDUNDADNT- CODED OUT 021421- NATIONAL RIGHT HAND DAY
+###############################
+## CATEGORY
+#time.sleep(2)
+#pyautogui.click(989, 298)
+#pyautogui.click(635, 441)
+###############################
+
+
+webbrowser.open('https://www.ebay.com/sl/prelist/suggest', new=2)
+
+
+
+time.sleep(15) # LONG PAUSE FOR SLOW NETWORK CONNECTION
+
+# CLICKS INTO TEXT BOX ENTRY
+pyautogui.click(225, 175)
+#pyautogui.write(xxx_list[0])
+# FIRST ITEM ON LIST
+g= xxx_list[0]
+pyautogui.write(g)
+#WAY TO ESCPAE OUT TAB
+pyautogui.keyDown("tab")
+#ENTER GO BUTTON - NOTICE 175 line y axis aye
+pyautogui.click(1056, 176)
+time.sleep(5)
+#WAY TO ESCPAE OUT TAB
+pyautogui.keyDown("tab")
+#TITLE CLICK SECOND - OH THIS IS A SAFETY SECOND CLICK - NOTICE SAME LOCATION AYE
+pyautogui.click(1056, 176)
+time.sleep(7)
+
+#NEW WEB PAGE- GIVEN 7 Seconds to load
+pyautogui.keyDown("tab")
+pyautogui.keyDown("tab")
+#pyautogui.click(647,443)
+#pyautogui.click(636, 417)
+#pyautogui.click(637, 439)
+#NEXT BUTTON
+pyautogui.click(639, 487)
+time.sleep(5)
+
+
+
+#ISSUE AREA TRY EXCEPT >??
+#SECRET BUTTON SWEEP FOR ERRORS SHH- SWEEP UPWARDS VERY KEY
+#DONT USE- BUGS EBAY OUT
+#CONTINUE BUTTON
+#THREE ATTEMPTS
+
+#MATCHES BUTTON
+pyautogui.click(629, 794)
+pyautogui.click(629, 673)
+pyautogui.click(629, 582)
+pyautogui.click(629, 482)
+
+
+#marlins= pyautogui.locateOnScreen("xxx.png")
+#print(marlins)
+
+
+
+
+#reds= marlins[0]
+#cardinals= marlins[1]
+#pyautogui.click(reds,marlins)
+
+
+time.sleep(5)
+
+#USED BUTTON
+pyautogui.click(333, 419)
+#NEXT BUTTON
+pyautogui.click(638, 513)
+
+#### ACTUALLY LOADING ONTO EBAY LIST PAGE HOORAY
+
+time.sleep(5)
+pyautogui.click(81, 241)
+time.sleep(5)
+pyautogui.click(81, 281)
+
+
+
+
+###########################################
+pyautogui.keyDown("space")
+time.sleep(5)
+
+##ADD FROM COMPUTER BUTTON EBAY
+#rangers= 300
+#while rangers < 800:
+#    pyautogui.click(382, rangers)
+#    rangers= rangers + 15
+
+
+
+# iMAGE RECOGNIATION TECH
+time.sleep(2)
+
+try:
+    b= pyautogui.locateOnScreen("zzz.png")
+    print(b)
+except:
+    print("could not find add from computer image")
+    pyautogui.keyDown("space")
+    pyautogui.locateOnScreen("zzz.png")
+
+
+
+#Box(left=299, top=694, width=177, height=27)
+
+ppp_list= []
+for h in b:
+    ppp_list.append(h)
+print(ppp_list)
+
+
+time.sleep(5)
+pyautogui.click(ppp_list[0]+10,ppp_list[1]+10)
+
+
+#pyautogui.click(382, 669)
+#pyautogui.click(382, 649)
+#pyautogui.click(382, 689)
+#pyautogui.click(382, 708)
+
+
+# SAVING IMAGE PROGRAM
+
+time.sleep(10) #NEEDS LONGER PAUSE
+#pyautogui.click(557, 81) #WINDOW CLICK IN _ ERROR PRONE LOCATION BASED
+pyautogui.keyDown("h")
+pyautogui.keyDown("enter")
+time.sleep(5)
+
+
+# CLICK INTO TEXT BOX
+pyautogui.keyDown("space")
+
+#angels = 350
+#while angels < 800:
+#    pyautogui.click(697,angels)
+#    for x in range(100):  # DELETES ANY POSSIBILIY OF A HUGE TEXT BOX CONTENT
+#        pyautogui.keyDown("backspace")
+#    braves = xxx_list[3:]
+#    braves = str(braves)
+#    pyautogui.write(braves)
+#    angels= angels + 35
+
+
+#697, y=528
+
+
+
+
+#pyautogui.click(698, 472)
+#pyautogui.click(833, 470)
+
+#for i in range(4):
+#    pyautogui.click("tab")
+#pyautogui.click()
+
+#angels = 340
+#while v < 800:
+#    pyautogui.click()
+
+#867, y=340
+
+
+time.sleep(2)
+b= pyautogui.locateOnScreen("bbb.png")
+print(b)
+
+
+#Box(left=299, top=694, width=177, height=27)
+
+ppp_list= []
+for h in b:
+    ppp_list.append(h)
+print(ppp_list)
+
+
+time.sleep(5)
+pyautogui.click(ppp_list[0]+10,ppp_list[1]+10)
+
+
+
+for x in range(100): # DELETES ANY POSSIBILIY OF A HUGE TEXT BOX CONTENT
+    pyautogui.keyDown("backspace")
+
+
+
+
+#pyautogui.keyDown("tab") ### TABBING TO GET TO DESCRRIPTION FROM PICTURE
+#pyautogui.keyDown("tab")
+#pyautogui.keyDown("tab")
+#pyautogui.keyDown("tab")
+#pyautogui.hotkey("command","a")s
+#pyautogui.write("my mommas titties ")
+#pyautogui.hotkey("command", "a")
+#pyautogui.keyDown("delete")
+#pyautogui.click(381, 356)
+
+
+###### PROBLEM POINT 021521 0919pm
+#print(xxx_list[3:])
+#print(type(xxx_list[3:]))
+
+
+# ENTER DESCRIPTION AYE SHATTA BOI
+braves= xxx_list[3:]
+braves=str(braves)
+pyautogui.write(braves)
+#pyautogui.keyDown("tab")
+#pyautogui.click(640, 258) ## APPLY RECOMMENDATION BUTTON
+
+# SHIPPING
+pyautogui.click(68,463) # RANDOM SIDE CLICK ? ?
+pyautogui.keyDown("space")
+time.sleep(2) #QUICK PAUSE
+
+x=250
+while x < 800:
+    pyautogui.click(233,x)
+    x= x+4
+
+
+
+#pyautogui.click(233, 606)
+time.sleep(5) # PAUSE
+
+
+
+
+
+pyautogui.click(783, 547)
+time.sleep(5) # PAUSE
+pyautogui.click(211, 290)
+time.sleep(5) # PAUSE
+pyautogui.click(930, 613)
+time.sleep(5) # PAUSE
+pyautogui.write(xxx_list[2])
+pyautogui.keyDown("tab")
+pyautogui.click(55, 543) # RANDOM SIDE CLICK
+pyautogui.click(57, 545) # RANDOM SIDE CLICK
+pyautogui.keyDown("space")
+pyautogui.click(406, 551) #SUBMIT BUTTON
+time.sleep(2) # QUICK PAUSE _ DOESN"T SEEM TO LIKE ONLY ONE HIT CLICK
+pyautogui.click(407, 552) #SUBMIT BUTTON
+pyautogui.click(880, 641) # GET OUT OF EASY PRICING
+
+
+
+
+#MESS WITH ACTUAL MAC OS MOUSE FUNCTIONS FOR CROP ISSUE
+
